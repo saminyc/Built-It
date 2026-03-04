@@ -28,7 +28,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <h1 className="text-center text-sm text-muted-foreground py-4">BUILTIT Inc. All rights reserved.</h1>
+        <h1 className="text-center text-sm text-muted-foreground py-4">BUILT-IT INC. All rights reserved.</h1>
       </body>
     </html>
   );
