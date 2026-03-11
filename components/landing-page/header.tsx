@@ -1,23 +1,29 @@
+"use client";
+
 import Link from "next/link";
-import { SparkleIcon, CircleUser } from "lucide-react";
+import { SparkleIcon } from "lucide-react";
 import { Button } from "../ui/button";
+
+import {
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useAuth,
+} from "@clerk/nextjs";
 
 const Logo = () => {
   return (
-    <Link
-      href="/"
-      className="flex items-center gap-2 font-semibold text-lg group"
-    >
-      <div className="size-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground transition-transform group-hover:scale-110">
+    <Link href="/" className="flex items-center gap-2 font-semibold text-lg group">
+      <div className="size-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
         <SparkleIcon className="size-4" />
       </div>
-      <span className="tracking-tight">Built-It</span>
+      <span>Built-It</span>
     </Link>
   );
 };
 
 export const Header = () => {
-  const isSignedIn =true; // Replace with actual authentication logic
+  const { isSignedIn } = useAuth();
 
   return (
     <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50">
@@ -28,36 +34,37 @@ export const Header = () => {
         <nav className="flex items-center gap-6">
           <Link
             href="/Home"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             Home
           </Link>
 
           <Link
             href="/Explore"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             Explore
           </Link>
 
-          {isSignedIn ? (
+          {!isSignedIn ? (
             <>
-            <Button asChild>
-              <Link href="/submit">Submit Project</Link>
-            </Button>
-            {/* Clerk User Icon Placeholder */}
-            <Button variant={"ghost"}>
-                <CircleUser className="size-4"/>
-            </Button>
+              <SignInButton mode="modal">
+                <Button variant="ghost">Sign In</Button>
+              </SignInButton>
+
+              <SignUpButton mode="modal">
+                <Button>Sign Up</Button>
+              </SignUpButton>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="ghost">Sign In</Button>
-              <Button variant="outline">Sign Up</Button>
-            </div>
+            <>
+              <Button asChild>
+                <Link href="/submit">Submit Project</Link>
+              </Button>
+              <UserButton />
+            </>
           )}
         </nav>
-
       </div>
     </header>
   );
