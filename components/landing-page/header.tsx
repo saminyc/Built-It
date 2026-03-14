@@ -23,7 +23,7 @@ const Logo = () => {
 };
 
 export const Header = () => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useAuth(); // Get the authentication state
 
   return (
     <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50">
