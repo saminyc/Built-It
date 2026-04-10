@@ -1,76 +1,55 @@
-import React from 'react'
-import Link from "next/link"
-import { Star, ArrowUp } from 'lucide-react'
-import { SectionHeader } from '../common/section-header'
-import { Button } from '../ui/button'
-import { ProductCard } from '../products/product-card'
-import { getFeaturedProducts } from '@/lib/products/product-select'
+import React from "react";
+import Link from "next/link";
+import { Star, ArrowUp } from "lucide-react";
+import { SectionHeader } from "../common/section-header";
+import { Button } from "../ui/button";
+import { ProductCard } from "../products/product-card";
+import { getFeaturedProducts } from "@/lib/products/product-select";
+import type { InferSelectModel } from "drizzle-orm";
+import productsTable from "@/db/schema";
 
-// Sample data for featured products (replace with real data from the database)
-// const featuredProducts=[
-//   {
-//     id:1,
-//     name:"ParityKit",
-//     description:"A toolkit for creating parity products.",
-//     tags: ["SaaS", "Pricing", "Global"],
-//     votes: 615,
-//     isFeatured: true
-//   },
-//   {
-//     id:2,
-//     name:"Developer to Leader",
-//     description:"A course on Data Engineering and Leadership.",
-//     tags: ["Course", "Leadership"],
-//     votes: 489,
-//     isFeatured: true
-//   },
-//   {
-//     id:3,
-//     name:"DataStack Insights",
-//     description:"A newsletter on data engineering trends.",
-//     tags: ["Newsletter", "Data Engineering"],
-//     votes: 320,
-//     isFeatured: false
-//   },
-// ]
+// DB type
+type Product = InferSelectModel<typeof productsTable>;
 
 const FeaturedProducts = async () => {
-  const featuredProducts = await getFeaturedProducts(); // Fetch featured products from the database
+  const featuredProducts = await getFeaturedProducts();
+
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="wrapper">
-        <div className="flex items-center justify-between mb-8">
-          <SectionHeader
-            title={"Featured Today"}
-            icon={Star}
-            description={"Top picks from our community this week."}
-          />
+      <section className="py-20 bg-gray-50">
+        <div className="wrapper">
+          <div className="flex items-center justify-between mb-8">
+            <SectionHeader
+                title="Featured Today"
+                icon={Star}
+                description="Top picks from our community this week."
+            />
 
-          <Button variant="default" asChild className="hidden sm:flex mr-4">
-            <Link href="/explore" className="flex items-center gap-2">
-              View All
-              <ArrowUp className="size-4" />
-            </Link>
-          </Button>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {/* Placeholder for featured products */
-            featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={{
-                id: product.id,
-                name: product.name,
-                description: product.description ?? "",
-                tags: product.tags ?? [],
-                votes: product.voteCount,
-                isFeatured: true,
-              }} />
-            )
-            )
-          }
-        </div>
-      </div>
-    </section>
-  )
-}
+            <Button variant="default" asChild className="hidden sm:flex mr-4">
+              <Link href="/explore" className="flex items-center gap-2">
+                View All
+                <ArrowUp className="size-4" />
+              </Link>
+            </Button>
+          </div>
 
-export default FeaturedProducts
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredProducts.map((product) => (
+                <ProductCard
+                    key={product.id}
+                    product={{
+                      id: product.id,
+                      name: product.name,
+                      description: product.description || "",
+                      tags: product.tags || [],
+                      votes: product.voteCount,
+                      isFeatured: product.status === "approved",
+                    }}
+                />
+            ))}
+          </div>
+        </div>
+      </section>
+  );
+};
+
+export default FeaturedProducts;

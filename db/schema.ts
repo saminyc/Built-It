@@ -1,7 +1,7 @@
 import { integer, pgTable, serial, text, timestamp, varchar, json, uniqueIndex, index } from 'drizzle-orm/pg-core';
 
 // ===========Products Table==========
-export const productsTable = pgTable(
+const productsTable = pgTable(
     "products",
     {
         id: serial("id").primaryKey(),
@@ -39,9 +39,10 @@ export const productsTable = pgTable(
 
         organizationId: varchar("organization_id", { length: 255 }),
     },
-    (table) => ({ // indexing columns that will be often used to run queries for
+    (table) => ({ // indexing columns that will be used to run queries for
         slugIdx: uniqueIndex("products_slug_idx").on(table.slug),
         statusIdx: index("products_status_idx").on(table.status),
         organizationIdx: index("products_organization_idx").on(table.organizationId)
     })
 );
+export default productsTable

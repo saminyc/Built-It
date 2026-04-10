@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { productsTable } from "@/db/schema";
+import productsTable from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // Function to get all approved products for the homepage

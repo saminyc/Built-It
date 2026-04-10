@@ -1,5 +1,5 @@
 import { db } from "../db/db";
-import { productsTable } from "@/db/schema";
+import productsTable from "@/db/schema";
 import { allProducts } from "./data";
 
 async function seed() {
