@@ -1,7 +1,7 @@
-import { integer, pgTable, serial, text, timestamp, varchar, json, uniqueIndex, index } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, text, timestamp, varchar, json, uniqueIndex, index, boolean } from 'drizzle-orm/pg-core';
 
 // ===========Products Table==========
-const productsTable = pgTable(
+export const productsTable = pgTable(
     "products",
     {
         id: serial("id").primaryKey(),
@@ -31,6 +31,7 @@ const productsTable = pgTable(
         status: varchar("status", { length: 20 })
             .notNull()
             .default("pending"),
+        isFeatured: boolean("is_featured").default(false),
 
         submittedBy: varchar("submitted_by", { length: 120 })
             .default("anonymous"),
@@ -45,4 +46,3 @@ const productsTable = pgTable(
         organizationIdx: index("products_organization_idx").on(table.organizationId)
     })
 );
-export default productsTable

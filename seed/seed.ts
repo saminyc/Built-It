@@ -1,11 +1,28 @@
-import { db } from "../db/db";
-import productsTable from "@/db/schema";
+import { db } from "@/db/db";
+import { productsTable } from "@/db/schema";
 import { allProducts } from "./data";
 
 async function seed() {
-  await db.insert(productsTable).values(allProducts);
+    // ✅ CLEAR OLD DATA
+    await db.delete(productsTable);
 
-  console.log("Seed data inserted!");
+    // ✅ INSERT FRESH DATA
+    await db.insert(productsTable).values(
+        allProducts.map((product) => ({
+            name: product.name,
+            slug: product.slug,
+            tagline: product.tagline,
+            description: product.description,
+            websiteUrl: product.websiteUrl,
+            tags: product.tags,
+            voteCount: product.voteCount,
+            isFeatured: product.isFeatured,
+            status: "approved",
+            createdAt: new Date(),
+        }))
+    );
+
+    console.log("Seed data inserted!");
 }
 
-seed(); // seed function is called at the end of the file to execute the seeding process.
+seed();

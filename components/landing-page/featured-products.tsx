@@ -4,14 +4,10 @@ import { Star, ArrowUp } from "lucide-react";
 import { SectionHeader } from "../common/section-header";
 import { Button } from "../ui/button";
 import { ProductCard } from "../products/product-card";
-import { getFeaturedProducts } from "@/lib/products/product-select";
-import type { InferSelectModel } from "drizzle-orm";
-import productsTable from "@/db/schema";
+import {getFeaturedProducts} from "@/lib/products/product-select";
 
-// DB type
-type Product = InferSelectModel<typeof productsTable>;
 
-const FeaturedProducts = async () => {
+export const FeaturedProducts = async () => {
   const featuredProducts = await getFeaturedProducts();
 
   return (
@@ -34,22 +30,13 @@ const FeaturedProducts = async () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProducts.map((product) => (
-                <ProductCard
-                    key={product.id}
-                    product={{
-                      id: product.id,
-                      name: product.name,
-                      description: product.description || "",
-                      tags: product.tags || [],
-                      votes: product.voteCount,
-                      isFeatured: product.status === "approved",
-                    }}
-                />
+            <ProductCard
+                key={product.id}
+                product={product}
+            />
             ))}
           </div>
         </div>
       </section>
   );
 };
-
-export default FeaturedProducts;

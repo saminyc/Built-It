@@ -1,9 +1,24 @@
-import { db } from "@/db/db";
-import productsTable from "@/db/schema";
-import { eq } from "drizzle-orm";
+import {productsTable} from "@/db/schema";
+import { eq,desc } from "drizzle-orm";
+import {db} from "@/db/db";
 
-// Function to get all approved products for the homepage
+
 export async function getFeaturedProducts(){
-    const productsData = await db.select().from(productsTable).where(eq(productsTable.status, "approved"));
-    return productsData;
+    const featuredProducts = await db
+        .select()
+        .from(productsTable)
+        .where(eq(productsTable.isFeatured, true))
+    return featuredProducts;
+}
+
+
+
+export async function getRecentlyLaunchedProducts(){
+    const recentProducts = await db
+        .select()
+        .from(productsTable)
+        .orderBy(desc(productsTable.createdAt))
+        .limit(6);
+
+    return recentProducts;
 }
