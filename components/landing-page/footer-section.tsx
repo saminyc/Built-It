@@ -1,7 +1,9 @@
 import React from 'react'
-
-export const FooterSection = () => {
-  return (
+import {cacheLife} from "next/cache";
+export const FooterSection = async() => {
+    'use cache' // NextJS Caching enabled
+    cacheLife({ revalidate: 3600 });
+    return (
     <div>
         <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto text-center">

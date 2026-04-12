@@ -5,9 +5,11 @@ import { SectionHeader } from "../common/section-header";
 import { Button } from "../ui/button";
 import { ProductCard } from "../products/product-card";
 import {getFeaturedProducts} from "@/lib/products/product-select";
-
+import {cacheLife} from "next/cache";
 
 export const FeaturedProducts = async () => {
+  'use cache'
+  cacheLife("hours")
   const featuredProducts = await getFeaturedProducts();
 
   return (
