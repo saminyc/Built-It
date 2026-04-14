@@ -1,3 +1,4 @@
+"use cache";
 import React from "react";
 import Link from "next/link";
 import { Star, ArrowUp } from "lucide-react";

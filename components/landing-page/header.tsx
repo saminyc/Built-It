@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SparkleIcon } from "lucide-react";
+import { SparkleIcon, LoaderIcon} from "lucide-react";
 import { Button } from "../ui/button";
 
 import {
@@ -10,10 +10,12 @@ import {
   UserButton,
   useAuth,
 } from "@clerk/nextjs";
+import {Suspense} from "react";
+
 
 const Logo = () => {
   return (
-    <Link href="/" className="flex items-center gap-2 font-semibold text-lg group">
+      <Link href="/" className="flex items-center gap-2 font-semibold text-lg group">
       <div className="size-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
         <SparkleIcon className="size-4" />
       </div>
@@ -27,6 +29,7 @@ export const Header = () => {
 
   return (
     <header className="w-full border-b bg-background/80 backdrop-blur sticky top-0 z-50">
+
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         <Logo />
 
@@ -47,6 +50,7 @@ export const Header = () => {
 
           {!isSignedIn ? (
             <>
+            <Suspense fallback={<div><LoaderIcon/></div>}>
               <SignInButton mode="modal">
                 <Button variant="ghost">Sign In</Button>
               </SignInButton>
@@ -54,6 +58,7 @@ export const Header = () => {
               <SignUpButton mode="modal">
                 <Button>Sign Up</Button>
               </SignUpButton>
+            </Suspense>
             </>
           ) : (
             <>

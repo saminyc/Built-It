@@ -1,9 +1,11 @@
+
 import React from "react";
 import { ProductCard } from "../products/product-card";
 import { getRecentlyLaunchedProducts } from "@/lib/products/product-select";
 
 const RecentlyLaunchedProducts = async () => {
-  const recentlyLaunchedProducts = await getRecentlyLaunchedProducts();
+    "use cache" // caching components
+    const recentlyLaunchedProducts = await getRecentlyLaunchedProducts();
 
   return (
       <div>
@@ -11,7 +13,7 @@ const RecentlyLaunchedProducts = async () => {
           Recently Launched Products
         </h2>
 
-        {recentlyLaunchedProducts.length < 0 ? (
+        {recentlyLaunchedProducts.length === 0 ? (
             <p className="text-muted-foreground">
               No products launched recently.
             </p>
