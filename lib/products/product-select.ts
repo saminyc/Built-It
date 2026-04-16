@@ -1,29 +1,44 @@
-import { productsTable } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
 import { db } from "@/db/db";
-import { cacheLife, cacheTag } from "next/cache";
+import { productsTable } from "@/db/schema";
+import { desc, eq, gte, and } from "drizzle-orm";
+import { cacheLife } from "next/cache";
 
+// ✅ Featured products (approved + featured, sorted by votes)
 export async function getFeaturedProducts() {
-    'use cache' // NextJS caching enabled
-    cacheLife({
-        revalidate: 3600, // ✅ 1 hour
-    });
+    "use cache";
+
+    cacheLife({ revalidate: 3600 }); // 1 hour
 
     return await db
         .select()
         .from(productsTable)
-        .where(eq(productsTable.isFeatured, true));
+        .where(
+            and(
+                eq(productsTable.status, "approved"),
+                eq(productsTable.isFeatured, true)
+            )
+        )
+        .orderBy(desc(productsTable.voteCount));
 }
 
+// ✅ Recently launched products (last 7 days)
 export async function getRecentlyLaunchedProducts() {
-    'use cache' // NextJS caching enabled
-    cacheLife({
-        revalidate: 600, // ✅ 10 minutes
-    });
+    "use cache";
+
+    cacheLife({ revalidate: 600 }); // 10 minutes
+
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
     return await db
         .select()
         .from(productsTable)
+        .where(
+            and(
+                eq(productsTable.status, "approved"),
+                gte(productsTable.createdAt, oneWeekAgo)
+            )
+        )
         .orderBy(desc(productsTable.createdAt))
         .limit(6);
 }

@@ -4,7 +4,7 @@ import { ProductCard } from "../products/product-card";
 import { getRecentlyLaunchedProducts } from "@/lib/products/product-select";
 
 const RecentlyLaunchedProducts = async () => {
-    "use cache" // caching components
+
     const recentlyLaunchedProducts = await getRecentlyLaunchedProducts();
 
   return (
